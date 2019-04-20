@@ -41,10 +41,14 @@ public class StoriesFragment extends Fragment {
         WindowUtil.doOnApplyWindowInsetsToPadding(recyclerView, true, true);
 
         //TODO create a adapter
+        StoriesAdapter adapter  = new StoriesAdapter();
 
         //TODO create a grid layout manager with default span of 2 and the SpanSizeLookup for each type
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        gridLayoutManager.setSpanSizeLookup((
 
         //TODO set up the recyclerView with the layoutManager and adapter
+                recyclerView.setAdapter(adapter);
 
         //TODO add a callback to the adapter that calls the method onStoryClicked when the user clicks on the list item
 
