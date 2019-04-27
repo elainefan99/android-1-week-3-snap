@@ -18,15 +18,21 @@ import java.util.List;
 public class StoriesAdapter extends RecyclerView.Adapter {
 
     private List<StoriesListItem> items = new ArrayList<>();
+
     private StoryCardViewHolder.StoryCardClickListener Listener;
     public void setItems(Context context, List<Story> stories) {
         items.clear();
 
         //TODO add title item, using context.getString(R.string.stories)) to get the title
+        items.add(new StoriesListItem(context.getString(R.string.stories)));
 
         //TODO add all of the story items to the list
+        for(Story story : stories) {
+            items.add(new StoriesListItem(story));
+        }
 
         //TODO let the adapter know that  the data has changed
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -39,7 +45,9 @@ public class StoriesAdapter extends RecyclerView.Adapter {
                 return StoriesSectionTitleViewHolder.inflate(parent);
 
             case StoriesListItem.TYPE_CARD:
-                return StoriesSectionTitleViewHolder.inflate(parent);
+                StoryCardViewHolder viewHolder = StoryCardViewHolder.inflate(parent);
+                        viewHolder.setStoryItemCallback(Listener);
+                return viewHolder;
         }
         return null;
     }
@@ -69,16 +77,16 @@ public class StoriesAdapter extends RecyclerView.Adapter {
     public int getSpanSize (int position) {
         switch (getItemViewType(position)){
             case StoriesListItem.TYPE_CARD:
-                return 2;
-            case StoriesListItem.TYPE_TITLE:
                 return 1;
+            case StoriesListItem.TYPE_TITLE:
+                return 2;
         }
         return 0;
     }
     //TODO add a custom interface called Callback that extends the click listener defined on the StoriesCardViewHolder
-        public void setOnItemClickCallback (StoryCardViewHolder.StoryCardClickListener listener){
+    public void setOnItemClickCallback (StoryCardViewHolder.StoryCardClickListener listener){
         this.Listener = listener;
-        }
+    }
 
     private class StoriesListItem {
 
@@ -90,8 +98,6 @@ public class StoriesAdapter extends RecyclerView.Adapter {
         @Nullable
         private Story story;
         private int type;
-
-
 
          public StoriesListItem(String title) {
           this.title = title;
